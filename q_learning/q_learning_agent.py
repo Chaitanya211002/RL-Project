@@ -7,6 +7,7 @@ class QLearningAgent:
         n_states: int = 27,
         n_actions: int = 3,
         alpha: float = 0.1,
+        alpha_decay: float = 1.0,
         gamma: float = 0.99,
         epsilon: float = 1.0,
         epsilon_min: float = 0.05,
@@ -15,6 +16,7 @@ class QLearningAgent:
         self.n_states = n_states
         self.n_actions = n_actions
         self.alpha = alpha
+        self.alpha_decay = alpha_decay
         self.gamma = gamma
         self.epsilon = epsilon
         self.epsilon_min = epsilon_min
@@ -34,6 +36,8 @@ class QLearningAgent:
             target += self.gamma * np.max(self.Q[next_state_id])
 
         self.Q[state_id, action] = current + self.alpha * (target - current)
+        # Optional learning-rate decay
+        self.alpha = max(self.alpha * self.alpha_decay, 1e-4)
 
     def decay_epsilon(self):
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)

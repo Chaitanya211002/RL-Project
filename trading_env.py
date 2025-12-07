@@ -56,14 +56,17 @@ class TradingEnv:
 
     def _get_state(self):
         row = self.df.loc[self.t]
-        state = np.array([
-            row["Close"],
-            row["MA_5"],
-            row["MA_20"],
-            row["RSI"],
-            row["ATR"],
-            row["Volume"],
-            self.cash / 10000,
-            self.shares
-        ], dtype=np.float32)
+        state = np.array(
+            [
+                float(row["Close"]),
+                float(row["MA_5"]),
+                float(row["MA_20"]),
+                float(row["RSI"]),
+                float(row["ATR"]),
+                float(row["Volume"]),
+                float(self.cash) / 10000.0,
+                float(self.shares),
+            ],
+            dtype=np.float32,
+        )
         return state

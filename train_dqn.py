@@ -5,6 +5,7 @@ from baselines_and_metrics import *
 
 import numpy as np
 import matplotlib.pyplot as plt
+import torch
 
 df = load_processed_data()
 train, val, test = train_val_test_split(df)

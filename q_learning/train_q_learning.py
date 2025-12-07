@@ -1,10 +1,16 @@
 import csv
+import os
+import sys
 import numpy as np
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT not in sys.path:
+    sys.path.append(ROOT)
 
 from data_pipeline import load_processed_data, train_val_test_split
 from trading_env import TradingEnv
-from q_learning_agent import QLearningAgent
-from state_discretization import discretize_state
+from q_learning.q_learning_agent import QLearningAgent
+from q_learning.state_discretization import discretize_state
 
 
 def train():
@@ -12,10 +18,12 @@ def train():
     train_df, _, _ = train_val_test_split(df)
 
     env = TradingEnv(train_df)
-    agent = QLearningAgent()
+    agent = QLearningAgent(alpha=0.1, alpha_decay=0.999, epsilon=1.0, epsilon_min=0.01, epsilon_decay=0.995)
 
-    EPISODES = 200
+    EPISODES = 500
     log_rows = []
+    logs_dir = "logs"
+    os.makedirs(logs_dir, exist_ok=True)
 
     for ep in range(EPISODES):
         state = env.reset()
@@ -74,10 +82,12 @@ def train():
             }
         )
 
-    agent.save("q_table.npy")
-    print("Saved Q-table to q_table.npy")
+    q_table_path = os.path.join(logs_dir, "q_table.npy")
+    agent.save(q_table_path)
+    print(f"Saved Q-table to {q_table_path}")
 
-    with open("q_learning_training_log.csv", "w", newline="") as f:
+    training_log_path = os.path.join(logs_dir, "q_learning_training_log.csv")
+    with open(training_log_path, "w", newline="") as f:
         writer = csv.DictWriter(
             f,
             fieldnames=[
@@ -94,7 +104,7 @@ def train():
         )
         writer.writeheader()
         writer.writerows(log_rows)
-    print("Saved training log to q_learning_training_log.csv")
+    print(f"Saved training log to {training_log_path}")
 
 
 if __name__ == "__main__":

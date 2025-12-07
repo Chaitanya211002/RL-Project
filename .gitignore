@@ -1,2 +1,5 @@
 Project_Proposal (3).pdf
 *__pycache__
+*.pyc
+*.pth
+*.csv

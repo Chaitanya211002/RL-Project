@@ -1,9 +1,15 @@
+import os
+import sys
 import numpy as np
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT not in sys.path:
+    sys.path.append(ROOT)
 
 from data_pipeline import load_processed_data, train_val_test_split
 from trading_env import TradingEnv
-from q_learning_agent import QLearningAgent
-from state_discretization import discretize_state
+from q_learning.q_learning_agent import QLearningAgent
+from q_learning.state_discretization import discretize_state
 
 
 def evaluate(agent: QLearningAgent, test_df):
@@ -43,12 +49,13 @@ if __name__ == "__main__":
 
     print("Loading learned Q-table...")
     agent = QLearningAgent()
-    agent.load("q_table.npy")
+    q_table_path = os.path.join("logs", "q_table.npy")
+    agent.load(q_table_path)
     agent.epsilon = 0.0
 
     total_reward, final_value, sharpe = evaluate(agent, test_df)
 
-    print("\n=== Q-Learning Evaluation (Test Set) ===")
+    print("\n=== Q-Learning Evaluation ===")
     print(f"Total Reward: {total_reward:.6f}")
     print(f"Final Portfolio Value: ${final_value:.2f}")
     print(f"Sharpe Ratio: {sharpe:.4f}")

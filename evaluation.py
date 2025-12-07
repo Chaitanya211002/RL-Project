@@ -25,7 +25,7 @@ def evaluate_agent(agent, test_df):
         next_state, reward, done, info = env.step(action)
 
         rewards.append(reward)
-        values.append(info["portfolio_value"])
+        values.append(info["portfolio"])
 
         state = next_state
 

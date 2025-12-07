@@ -32,6 +32,7 @@ def compute_atr(df, window=14):
 
 def download_raw_data():
     print("Downloading raw AAPL data from Yahoo Finance...")
+    os.makedirs(os.path.dirname(RAW_PATH), exist_ok=True)
     df = yf.download("AAPL", start="2020-01-01", end="2024-12-31")
 
     df = df.reset_index()
@@ -77,6 +78,7 @@ def process_data(df):
     df[features] = (df[features] - df[features].mean()) / df[features].std()
 
     # Save processed CSV including Date
+    os.makedirs(os.path.dirname(PROCESSED_PATH), exist_ok=True)
     df.to_csv(PROCESSED_PATH, index=False)
     print("Saved processed data:", PROCESSED_PATH)
 
