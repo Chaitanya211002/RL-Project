@@ -62,6 +62,11 @@ def process_data(df):
     df["RSI"] = compute_rsi(df["Close"])
     df["ATR"] = compute_atr(df)
 
+    # Preserve raw indicator values for tabular state discretization
+    df["MA_5_original"] = df["MA_5"]
+    df["MA_20_original"] = df["MA_20"]
+    df["RSI_original"] = df["RSI"]
+
     df = df.dropna()
 
     # Save original Close for trading calculations
