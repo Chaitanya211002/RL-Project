@@ -54,7 +54,27 @@ def plot_summary(summary_path: str = os.path.join("logs", "q_experiments_summary
     print("Saved logs/q_learning_sharpe.png")
 
 
+def plot_eval_sharpe(eval_path: str = os.path.join("logs", "q_experiments_eval.csv")):
+    df = pd.read_csv(eval_path)
+    configs = df["config"].unique()
+
+    plt.figure(figsize=(10, 6))
+    for cfg in configs:
+        sub = df[df["config"] == cfg]
+        plt.plot(sub["episode"], sub["eval_sharpe"], label=cfg)
+    plt.xlabel("Episode (eval checkpoints)")
+    plt.ylabel("Sharpe (greedy eval)")
+    plt.title("Q-Learning Sharpe over Episodes (periodic eval)")
+    plt.legend()
+    plt.tight_layout()
+    out_path = os.path.join("logs", "q_learning_eval_sharpe.png")
+    plt.savefig(out_path, dpi=200)
+    plt.close()
+    print(f"Saved {out_path}")
+
+
 if __name__ == "__main__":
     plot_learning_curves()
     plot_summary()
+    plot_eval_sharpe()
 
