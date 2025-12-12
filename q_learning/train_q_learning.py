@@ -18,9 +18,9 @@ def train():
     train_df, _, _ = train_val_test_split(df)
 
     env = TradingEnv(train_df)
-    agent = QLearningAgent(alpha=0.1, alpha_decay=0.999, epsilon=1.0, epsilon_min=0.01, epsilon_decay=0.995)
+    agent = QLearningAgent(alpha=0.1, alpha_decay=0.999, epsilon=1.0, epsilon_min=0.01, epsilon_decay=0.998)
 
-    EPISODES = 500
+    EPISODES = 700
     log_rows = []
     logs_dir = "logs"
     os.makedirs(logs_dir, exist_ok=True)

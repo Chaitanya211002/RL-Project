@@ -23,14 +23,14 @@ class QExperimentConfig:
     name: str
     episodes: int = 200
     seed: int = 0
-    alpha: float = 0.1
+    alpha: float = 0.05
     alpha_decay: float = 0.999
     gamma: float = 0.99
     epsilon: float = 1.0
     epsilon_min: float = 0.01
     epsilon_decay: float = 0.995
     final_greedy_at: float = 0.0  # 0 means no forced greedy; >0 forces epsilon=0 after that fraction
-    eval_every: int = 50          # evaluate every N episodes
+    eval_every: int = 1           # evaluate every N episodes
 
 
 def set_seed(seed: int):
@@ -140,12 +140,13 @@ def main():
 
     experiments = [
         # Slow-decay family (best observed so far)
-        QExperimentConfig(name="slow_decay_base", episodes=400, seed=0, epsilon=0.7, epsilon_decay=0.999),
-        QExperimentConfig(name="slow_decay_lowemin", episodes=400, seed=0, epsilon=0.7, epsilon_decay=0.999, epsilon_min=0.001),
-        QExperimentConfig(name="slow_decay_faster", episodes=400, seed=0, epsilon=0.7, epsilon_decay=0.997),
+        QExperimentConfig(name="fast_decay", episodes=200, seed=0, epsilon=1, epsilon_decay=0.98),
+        #QExperimentConfig(name="slow_decay_lowemin", episodes=100, seed=0, epsilon=1, epsilon_decay=0.999, epsilon_min=0.001),
+        #QExperimentConfig(name="slow_decay_faster", episodes=100, seed=0, epsilon=1, epsilon_decay=0.997),
         #QExperimentConfig(name="slow_decay_seed1", episodes=400, seed=1, epsilon=0.7, epsilon_decay=0.999),
         #QExperimentConfig(name="slow_decay_seed2", episodes=400, seed=2, epsilon=0.7, epsilon_decay=0.999),
-        QExperimentConfig(name="slow_decay_alphafast", episodes=400, seed=0, epsilon=0.7, epsilon_decay=0.999, alpha_decay=0.997),
+        QExperimentConfig(name="slow_decay_alphafast", episodes=200, seed=443, epsilon=0.5, epsilon_decay=0.999, alpha_decay=0.997),
+        #QExperimentConfig(name="slow_decay_alphafast_443", episodes=100, seed=443, epsilon=0.7, epsilon_decay=0.999, alpha_decay=0.997),
     ]
 
     all_logs = []
